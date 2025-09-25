@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Áreas - Figuras Planas</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    select, input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px auto;
+      display: block;
+      font-size: 15px;
+      border-radius: 10px;
+      border: 1px solid #bbb;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: #6a5acd;
+      box-shadow: 0 0 5px rgba(106, 90, 205, 0.5);
+    }
+
+    button {
+      background: linear-gradient(135deg, #6a5acd, #836fff);
+      color: white;
+      padding: 12px 20px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 90%;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #483d8b, #6a5acd);
+      transform: scale(1.05);
+    }
+
+    .resultado {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #2e8b57;
+      background: #f0fff0;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: inset 0px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .inputs {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Calculadora de Áreas</h1>
+
+    <label for="figura">Escolha a figura:</label>
+    <select id="figura" onchange="mostrarCampos()">
+      <option value="">--Selecione--</option>
+      <option value="quadrado">Quadrado</option>
+      <option value="retangulo">Retângulo</option>
+      <option value="triangulo">Triângulo</option>
+      <option value="circulo">Círculo</option>
+      <option value="trapezio">Trapézio</option>
+      <option value="losango">Losango</option>
+      <option value="paralelogramo">Paralelogramo</option>
+      <option value="pentagono">Pentágono regular</option>
+      <option value="hexagono">Hexágono regular</option>
+    </select>
+
+    <div class="inputs" id="campos"></div>
+
+    <button onclick="calcular()">Calcular Área</button>
+
+    <div class="resultado" id="resultado"></div>
+  </div>
+
+  <script>
+    function mostrarCampos() {
+      const figura = document.getElementById("figura").value;
+      const campos = document.getElementById("campos");
+      campos.innerHTML = "";
+
+      if (figura === "quadrado") {
+        campos.innerHTML = '<input type="number" id="lado" placeholder="Digite o lado">';
+      } 
+      else if (figura === "retangulo" || figura === "triangulo" || figura === "paralelogramo") {
+        campos.innerHTML = `
+          <input type="number" id="base" placeholder="Digite a base">
+          <input type="number" id="altura" placeholder="Digite a altura">
+        `;
+      } 
+      else if (figura === "circulo") {
+        campos.innerHTML = '<input type="number" id="raio" placeholder="Digite o raio">';
+      } 
+      else if (figura === "trapezio") {
+        campos.innerHTML = `
+          <input type="number" id="baseMaior" placeholder="Digite a base maior">
+          <input type="number" id="baseMenor" placeholder="Digite a base menor">
+          <input type="number" id="altura" placeholder="Digite a altura">
+        `;
+      }
+      else if (figura === "losango") {
+        campos.innerHTML = `
+          <input type="number" id="dMaior" placeholder="Digite a diagonal maior">
+          <input type="number" id="dMenor" placeholder="Digite a diagonal menor">
+        `;
+      }
+      else if (figura === "pentagono" || figura === "hexagono") {
+        campos.innerHTML = `
+          <input type="number" id="lado" placeholder="Digite o lado">
+          <input type="number" id="apotema" placeholder="Digite a apótema">
+        `;
+      }
+    }
+
+    function calcular() {
+      const figura = document.getElementById("figura").value;
+      let area = 0;
+
+      if (figura === "quadrado") {
+        const lado = parseFloat(document.getElementById("lado").value);
+        area = lado * lado;
+      } 
+      else if (figura === "retangulo") {
+        const base = parseFloat(document.getElementById("base").value);
+        const altura = parseFloat(document.getElementById("altura").value);
+        area = base * altura;
+      } 
+      else if (figura === "triangulo") {
+        const base = parseFloat(document.getElementById("base").value);
+        const altura = parseFloat(document.getElementById("altura").value);
+        area = (base * altura) / 2;
+      } 
+      else if (figura === "circulo") {
+        const raio = parseFloat(document.getElementById("raio").value);
+        area = Math.PI * Math.pow(raio, 2);
+      } 
+      else if (figura === "trapezio") {
+        const baseMaior = parseFloat(document.getElementById("baseMaior").value);
+        const baseMenor = parseFloat(document.getElementById("baseMenor").value);
+        const altura = parseFloat(document.getElementById("altura").value);
+        area = ((baseMaior + baseMenor) * altura) / 2;
+      }
+      else if (figura === "losango") {
+        const dMaior = parseFloat(document.getElementById("dMaior").value);
+        const dMenor = parseFloat(document.getElementById("dMenor").value);
+        area = (dMaior * dMenor) / 2;
+      }
+      else if (figura === "paralelogramo") {
+        const base = parseFloat(document.getElementById("base").value);
+        const altura = parseFloat(document.getElementById("altura").value);
+        area = base * altura;
+      }
+      else if (figura === "pentagono") {
+        const lado = parseFloat(document.getElementById("lado").value);
+        const apotema = parseFloat(document.getElementById("apotema").value);
+        const perimetro = 5 * lado;
+        area = (perimetro * apotema) / 2;
+      }
+      else if (figura === "hexagono") {
+        const lado = parseFloat(document.getElementById("lado").value);
+        const apotema = parseFloat(document.getElementById("apotema").value);
+        const perimetro = 6 * lado;
+        area = (perimetro * apotema) / 2;
+      }
+
+      document.getElementById("resultado").innerText = 
+        "Área: " + area.toFixed(2) + " unidades²";
+    }
+  </script>
+</body>
+</html>
